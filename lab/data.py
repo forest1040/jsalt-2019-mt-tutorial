@@ -95,7 +95,7 @@ def _make_masked_tokens(sents, pad_idx):
     max_len = max(lengths)
     bsz = len(lengths)
     # Tensor containing the (right) padded tokens
-    tokens = th.full((max_len, bsz), pad_idx).long()
+    tokens = th.full((max_len, bsz), pad_idx, dtype=th.float64).long()
     for i in range(bsz):
         tokens[:lengths[i], i] = th.LongTensor(sents[i])
     # Mask such that mask[i, b] = 1 iff lengths[b] < i
