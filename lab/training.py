@@ -9,11 +9,12 @@ from tqdm import tqdm
 
 def load_data(cached_data="data/cached.pt", overwrite=False):
     if not os.path.isfile(cached_data) or overwrite:
-        vocab = Vocab.from_data_files("data/train.bpe.fr", "data/train.bpe.en")
-        train = MTDataset(vocab, "data/train.bpe",
-                          src_lang="fr", tgt_lang="en")
-        valid = MTDataset(vocab, "data/valid.bpe",
-                          src_lang="fr", tgt_lang="en")
+        vocab = Vocab.from_data_files(
+            "data/kyoto-train.bpe.ja", "data/kyoto-train.bpe.en")
+        train = MTDataset(vocab, "data/kyoto-train.bpe",
+                          src_lang="ja", tgt_lang="en")
+        valid = MTDataset(vocab, "data/kyoto-test.bpe",
+                          src_lang="ja", tgt_lang="en")
         th.save([vocab, train, valid], cached_data)
     # Load cached dataset
     return th.load(cached_data)

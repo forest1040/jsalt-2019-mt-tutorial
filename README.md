@@ -4,7 +4,15 @@ This is the Machine Translation tutorial given at the 2019 JSALT summer school.
 
 forked.
 
-## Setup For Google Colaboratory
+For Google Colaboratory
+
+## Clone
+
+```sh
+git clone https://github.com/forest1040/jsalt-2019-mt-tutorial.git
+```
+
+## Setup
 
 ```sh
 sudo pip3 install torch
@@ -17,15 +25,57 @@ sudo pip3 install sacrebleu
 
 ```sh
 wget http://www.phontron.com/kftt/download/kftt-data-1.0.tar.gz
+tar zxvf kftt-data-1.0.tar.gz
+mv kftt-data-1.0/data/orig/ jsalt-2019-mt-tutorial/data
 ```
 
 ## Subwords
 
+### subwords-model 作成
+
 ```sh
-python lab/subwords.py train \
+python3 lab/subwords.py train \
     --model_prefix data/subwords \
     --vocab_size 16000 \
     --model_type bpe \
-    --input data/train.en,data/train.fr
+    --input data/kyoto-train.en,data/kyoto-train.ja
+```
 
+### Train データの subwords 化
+
+```sh
+cat data/kyoto-train.en | python lab/subwords.py segment --model data/subwords.model > data/kyoto-train.bpe.en
+cat data/kyoto-train.ja | python lab/subwords.py segment --model data/subwords.model > data/kyoto-train.bpe.ja
+cat data/kyoto-test.en | python lab/subwords.py segment --model data/subwords.model > data/kyoto-test.bpe.en
+cat data/kyoto-test.ja | python lab/subwords.py segment --model data/subwords.model > data/kyoto-test.bpe.ja
+```
+
+## Train
+
+```sh
+python3 lab/training.py \
+    --cuda \
+    --n-layers 4 \
+    --n-heads 4 \
+    --embed-dim 512 \
+    --hidden-dim 512 \
+    --dropout 0.1 \
+    --lr 2e-4 \
+    --n-epochs 15 \
+    --tokens-per-batch 8000 \
+    --clip-grad 1.0
+```
+
+```sh
+python3 lab/training.py \
+    --cuda \
+    --n-layers 1 \
+    --n-heads 1 \
+    --embed-dim 256 \
+    --hidden-dim 256 \
+    --dropout 0.1 \
+    --lr 2e-4 \
+    --n-epochs 1 \
+    --tokens-per-batch 8000 \
+    --clip-grad 1.0
 ```
