@@ -44,10 +44,10 @@ python3 lab/subwords.py train \
 ### Train データの subwords 化
 
 ```sh
-cat data/kyoto-train.en | python lab/subwords.py segment --model data/subwords.model > data/kyoto-train.bpe.en
-cat data/kyoto-train.ja | python lab/subwords.py segment --model data/subwords.model > data/kyoto-train.bpe.ja
-cat data/kyoto-test.en | python lab/subwords.py segment --model data/subwords.model > data/kyoto-test.bpe.en
-cat data/kyoto-test.ja | python lab/subwords.py segment --model data/subwords.model > data/kyoto-test.bpe.ja
+cat data/kyoto-train.en | python3 lab/subwords.py segment --model data/subwords.model > data/kyoto-train.bpe.en
+cat data/kyoto-train.ja | python3 lab/subwords.py segment --model data/subwords.model > data/kyoto-train.bpe.ja
+cat data/kyoto-test.en | python3 lab/subwords.py segment --model data/subwords.model > data/kyoto-test.bpe.en
+cat data/kyoto-test.ja | python3 lab/subwords.py segment --model data/subwords.model > data/kyoto-test.bpe.ja
 ```
 
 ## Train
@@ -65,17 +65,17 @@ python3 lab/training.py \
     --tokens-per-batch 8000 \
     --clip-grad 1.0
 ```
-
 ```sh
-python3 lab/training.py \
+sudo python3 lab/training.py \
     --cuda \
-    --n-layers 1 \
-    --n-heads 1 \
-    --embed-dim 256 \
-    --hidden-dim 256 \
+    --n-layers 6 \
+    --n-heads 8 \
+    --embed-dim 512 \
+    --hidden-dim 2048 \
     --dropout 0.1 \
     --lr 2e-4 \
-    --n-epochs 1 \
+    --n-epochs 4 \
     --tokens-per-batch 8000 \
     --clip-grad 1.0
+
 ```
